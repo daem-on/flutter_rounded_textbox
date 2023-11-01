@@ -67,64 +67,44 @@ class _RoundedTextboxPainter extends CustomPainter {
       final aboveDifference = (above?.width ?? 0) - line.width;
       final belowDifference = (below?.width ?? 0) - line.width;
 
-      final topRadiusOut = (aboveDifference > 0) ? min(radius, aboveDifference / 3) : 0.0;
-      final bottomRadiusOut = (belowDifference > 0) ? min(radius, belowDifference / 3) : 0.0;
-      final topRadiusIn = (aboveDifference < 0) ? min(radius, -aboveDifference / 3) : 0.0;
-      final bottomRadiusIn = (belowDifference < 0) ? min(radius, -belowDifference / 3) : 0.0;
+      final topRadius = (aboveDifference / 3.5).clamp(-radius, radius);
+      final bottomRadius = (belowDifference / 3.5).clamp(-radius, radius);
 
-      final top = (above?.baseline ?? 0) + (above?.descent ?? 0) * scaling + padding;
+      final top =
+          (above?.baseline ?? 0) + (above?.descent ?? 0) * scaling + padding;
       final bottom = line.baseline + line.descent * scaling + padding;
       final left = (size.width - line.width) / 2 - padding;
       final right = (size.width + line.width) / 2 + padding;
 
-      final halfHeight = (bottom - top) / 2;
-      final positiveRectTop = RRect.fromLTRBAndCorners(
-        left - topRadiusOut,
-        top,
-        right + topRadiusOut,
-        top + halfHeight,
-        topLeft: Radius.elliptical(topRadiusIn, radius),
-        topRight: Radius.elliptical(topRadiusIn, radius),
+      path.moveTo(left + topRadius, top);
+
+      path.lineTo(right + topRadius, top);
+      path.arcToPoint(
+        Offset(right, top + radius),
+        radius: Radius.elliptical(topRadius, radius),
+        clockwise: topRadius < 0,
       );
 
-      final positiveRectBottom = RRect.fromLTRBAndCorners(
-        left - bottomRadiusOut,
-        bottom - halfHeight,
-        right + bottomRadiusOut,
-        bottom,
-        bottomLeft: Radius.elliptical(bottomRadiusIn, radius),
-        bottomRight: Radius.elliptical(bottomRadiusIn, radius),
+      path.lineTo(right, bottom - radius);
+      path.arcToPoint(
+        Offset(right + bottomRadius, bottom),
+        radius: Radius.elliptical(bottomRadius, radius),
+        clockwise: bottomRadius < 0,
       );
 
-      final negativeRectLeft = RRect.fromLTRBAndCorners(
-        left - radius,
-        top,
-        left,
-        bottom,
-        topRight: Radius.elliptical(topRadiusOut, radius),
-        bottomRight: Radius.elliptical(bottomRadiusOut, radius),
+      path.lineTo(left - bottomRadius, bottom);
+      path.arcToPoint(
+        Offset(left, bottom - radius),
+        radius: Radius.elliptical(bottomRadius, radius),
+        clockwise: bottomRadius < 0,
       );
 
-      final negativeRectRight = RRect.fromLTRBAndCorners(
-        right,
-        top,
-        right + radius,
-        bottom,
-        topLeft: Radius.elliptical(topRadiusOut, radius),
-        bottomLeft: Radius.elliptical(bottomRadiusOut, radius),
+      path.lineTo(left, top + radius);
+      path.arcToPoint(
+        Offset(left - topRadius, top),
+        radius: Radius.elliptical(topRadius, radius),
+        clockwise: topRadius < 0,
       );
-
-      var tempPath = Path()
-        ..addRRect(positiveRectTop)
-        ..addRRect(positiveRectBottom);
-
-      final negative = Path()
-        ..addRRect(negativeRectLeft)
-        ..addRRect(negativeRectRight);
-
-      tempPath = Path.combine(PathOperation.difference, tempPath, negative);
-
-      path.addPath(tempPath, Offset.zero);
     }
 
     canvas.drawPath(path, paint);
