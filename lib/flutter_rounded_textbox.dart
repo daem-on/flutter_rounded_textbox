@@ -90,23 +90,29 @@ class _RoundedTextboxPainter extends CustomPainter {
     final path = Path();
 
     final rrects = List<RRect>.filled(metrics.length, RRect.zero);
+    final lefts = _consolidate(metrics.map((e) => e.left).toList(), radius);
+    final rights = _consolidate(metrics.map((e) => e.right).toList(), radius);
     for (var i = 0; i < metrics.length; i++) {
       final line = metrics.elementAt(i);
       final above = metrics.getOrNull(i - 1);
-      final below = metrics.getOrNull(i + 1);
 
       final top = (above?.baseline ?? 0) + (above?.descent ?? 0) * scaling;
       final bottom = line.baseline + line.descent * scaling;
-      final left = line.left - padding;
-      final right = line.left + line.width + padding;
+      final left = lefts[i] - padding;
+      final right = rights[i] + padding;
       final rect = Rect.fromLTRB(left, top, right, bottom);
+
+      final aboveLeft = lefts.getOrNull(i - 1) ?? double.infinity;
+      final aboveRight = rights.getOrNull(i - 1) ?? 0;
+      final belowLeft = lefts.getOrNull(i + 1) ?? double.infinity;
+      final belowRight = rights.getOrNull(i + 1) ?? 0;
 
       rrects[i] = RRect.fromRectAndCorners(
         rect,
-        topLeft: _diffRadius(line.left, above.leftOrDefault),
-        topRight: _diffRadius(above.rightOrDefault, line.right),
-        bottomLeft: _diffRadius(line.left, below.leftOrDefault),
-        bottomRight: _diffRadius(below.rightOrDefault, line.right),
+        topLeft: _diffRadius(lefts[i], aboveLeft),
+        topRight: _diffRadius(aboveRight, rights[i]),
+        bottomLeft: _diffRadius(lefts[i], belowLeft),
+        bottomRight: _diffRadius(belowRight, rights[i]),
       );
     }
 
@@ -165,14 +171,20 @@ extension _LineMetricsHelpers on LineMetrics {
   double get right => left + width;
 }
 
-extension _NullableLineMetricsHelpers on LineMetrics? {
-  double get rightOrDefault => this?.right ?? 0;
-  double get leftOrDefault => this?.left ?? double.infinity;
-}
-
 extension _IterableHelpers<T> on Iterable<T> {
   T? getOrNull(int index) {
     if (index < 0 || index >= length) return null;
     return elementAt(index);
   }
+}
+
+List<T> _consolidate<T extends num>(List<T> list, num threshold) {
+  List<T> result = List<T>.from(list);
+  for (var i = 1; i < list.length; i++) {
+    num diff = (result[i - 1] - list[i]).abs();
+    if (diff < threshold) {
+      result[i] = result[i - 1];
+    }
+  }
+  return result;
 }
