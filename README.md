@@ -1,35 +1,29 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+This package adds the RoundedTextbox widget, which draws text with a rounded box
+(contour) around it, whith the concave corners also rounded. This behaviour is
+similar to Instagram and TikTok text backgrounds.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Import the package:
+```dart
+import 'package:flutter_rounded_textbox/flutter_rounded_textbox.dart';
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
 ```dart
-const like = 'sample';
+RoundedTextbox(
+	padding: 14,
+	radius: 8,
+	text: "Hello there,\nWorld!",
+	style: TextStyle(
+		color: Colors.white,
+		fontSize: 15,
+		height: 1.7,
+	),
+	backgroundColor: Colors.red,
+	textAlign: TextAlign.center,
+);
 ```
 
 ## Additional information

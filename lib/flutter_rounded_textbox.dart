@@ -4,8 +4,8 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 
-/// Draws text in a box with rounded corners, each line having an individual
-/// box and the concave corners of the boxes being rounded.
+/// Draws text with a rounded box (contour) around it. Both concave and convex
+/// corners are rounded.
 class RoundedTextbox extends StatelessWidget {
   final String text;
   final TextStyle style;
