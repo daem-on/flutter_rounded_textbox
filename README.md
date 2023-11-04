@@ -15,7 +15,7 @@ import 'package:flutter_rounded_textbox/flutter_rounded_textbox.dart';
 RoundedTextbox(
 	padding: 14,
 	radius: 8,
-	text: "Hello there,\nWorld!",
+	text: "This text has a background,\nand all the\ncorners of thebackground are rounded,\neven the concave\nones.",
 	style: TextStyle(
 		color: Colors.white,
 		fontSize: 15,
@@ -25,9 +25,8 @@ RoundedTextbox(
 	textAlign: TextAlign.center,
 );
 ```
+![Example screenshot](https://github.com/daem-on/flutter_rounded_textbox/blob/master/example/screenshot.png?raw=true)
 
-## Additional information
+## Contributing
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+If you would like to contribute, please [submit a pull request](https://github.com/daem-on/flutter_rounded_textbox/pulls).
