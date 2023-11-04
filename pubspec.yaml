@@ -1,7 +1,7 @@
 name: flutter_rounded_textbox
 description: Draws text with a rounded box (contour) around it
 version: 0.0.1
-homepage:
+repository: https://github.com/daem-on/flutter_rounded_textbox
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
