@@ -15,7 +15,7 @@ import 'package:flutter_rounded_textbox/flutter_rounded_textbox.dart';
 RoundedTextbox(
 	padding: 14,
 	radius: 8,
-	text: "This text has a background,\nand all the\ncorners of thebackground are rounded,\neven the concave\nones.",
+	text: "This text has a background,\nand all the\ncorners of the background are rounded,\neven the concave\nones.",
 	style: TextStyle(
 		color: Colors.white,
 		fontSize: 15,
